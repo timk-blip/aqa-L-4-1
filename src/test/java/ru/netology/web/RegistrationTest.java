@@ -1,5 +1,6 @@
 package ru.netology.web;
 
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,7 +18,8 @@ class RegistrationTest {
 
     @BeforeAll
     void setUp() {
-        System.setProperty("selenide.browser","Chrome");
+        Configuration.browser = "chrome";
+        System.setProperty("selenide.browser","chrome");
     }
 
     @AfterEach
