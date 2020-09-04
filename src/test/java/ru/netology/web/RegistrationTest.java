@@ -15,13 +15,6 @@ import static com.codeborne.selenide.Selenide.*;
 
 class RegistrationTest {
 
-
-    @BeforeAll
-    void setUp() {
-        Configuration.browser = "chrome";
-        System.setProperty("selenide.browser","chrome");
-    }
-
     @AfterEach
     void tearDown() {
         Selenide.closeWebDriver();
@@ -29,6 +22,8 @@ class RegistrationTest {
 
     @Test
     void shouldRegisterByCardNumber() {
+        Configuration.browser = "chrome";
+        System.setProperty("selenide.browser","chrome");
         open("http://localhost:9999");
         LocalDate date = LocalDate.now();
         int year = date.getYear();
