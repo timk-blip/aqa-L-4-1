@@ -32,14 +32,14 @@ class RegistrationTest {
         int month = date.getMonthValue();
         int dayOfMonth = date.getDayOfMonth();
         int nextDay = date.getDayOfMonth() + 7;
-        DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern(String.valueOf(nextDay / month / year));
+       /* DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern(String.valueOf(nextDay / month / year));
         LocalDate localDate = LocalDate.now();
         String dateString = FOMATTER.format(localDate);
-
+*/
         open("http://localhost:9999");
         $$("[placeholder=\"Город\"]").last().setValue("Нижний Новгород");
 
-        $$("[placeholder=\"Дата встречи\"]").last().setValue(String.valueOf(nextDay / month / year));
+        $$("[placeholder=\"Дата встречи\"]").last().setValue(String.valueOf(date));
         $$("[class='calendar__row'] > [class='calendar__day']").find(exactText(String.valueOf(nextDay))).click();
         $$("[name='name']").last().setValue("Фамилия");
         $$("[name='phone']").last().setValue("+79169682127");
