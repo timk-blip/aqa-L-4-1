@@ -8,6 +8,8 @@ import org.openqa.selenium.By;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.visible;
@@ -23,45 +25,22 @@ class RegistrationTest {
     }
 
     @Test
-    void shouldRegisterByAccountNumberDOMModification() {
-        open("http://localhost:9999");
-        $$(".tab-item").find(exactText("По номеру счёта")).click();
-        $("[name='number']").setValue("4055 0100 0123 4613 8564");
-        $("[name='phone']").setValue("+792000000000");
-        $$("button").find(exactText("Продолжить")).click();
-        $(withText("Успешная авторизация")).waitUntil(visible, 5000);
-        $(byText("Личный кабинет")).waitUntil(visible, 5000);
-    }
-
-    @Test
-    void shouldRegisterByAccountNumberVisibilityChange() {
-        open("http://localhost:9999");
-        $$(".tab-item").find(exactText("По номеру счёта")).click();
-        $$("[name='number']").last().setValue("4055 0100 0123 4613 8564");
-        $$("[name='phone']").last().setValue("+792000000000");
-        $$("button").find(exactText("Продолжить")).click();
-        $(withText("Успешная авторизация")).waitUntil(visible, 5000);
-        $(byText("Личный кабинет")).waitUntil(visible, 5000);
-    }
-
-    @Test
     void shouldRegisterByCardNumber() {
+
         LocalDate date = LocalDate.now();
         int year = date.getYear();
         int month = date.getMonthValue();
         int dayOfMonth = date.getDayOfMonth();
-        date = date.plusYears(0);
-        date = date.plusMonths(0);
-        date = date.plusDays(5);
+        int nextDay = date.getDayOfMonth() + 7;
+        DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern(String.valueOf(nextDay / month / year));
+        LocalDate localDate = LocalDate.now();
+        String dateString = FOMATTER.format(localDate);
 
         open("http://localhost:9999");
         $$("[placeholder=\"Город\"]").last().setValue("Нижний Новгород");
-     /*  $$("[class='icon icon_size_m icon_name_calendar icon_theme_alfa-on-white']").last().click();
 
-
-*/
-        $$("#tbody").find(Condition.attribute("[class=\"calendar__row\"]")).find(String.valueOf(Condition.attribute("[class=\"calendar__day calendar__day_type_off\"]"))).findAll("class=\"calendar__day calendar__day_type_off calendar__day_state_today\"");
-      // $$("[placeholder=\"Дата встречи\"]").last().setValue("11.11.2021");
+        $$("[placeholder=\"Дата встречи\"]").last().setValue(String.valueOf(nextDay / month / year));
+        $$("[class='calendar__row'] > [class='calendar__day']").find(exactText(String.valueOf(nextDay))).click();
         $$("[name='name']").last().setValue("Фамилия");
         $$("[name='phone']").last().setValue("+79169682127");
         $("[class='checkbox__box']").click();
