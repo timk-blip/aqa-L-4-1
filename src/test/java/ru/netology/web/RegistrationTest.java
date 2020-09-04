@@ -1,16 +1,11 @@
 package ru.netology.web;
 
-import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
-
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.withText;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
 
 class RegistrationTest {
@@ -22,15 +17,12 @@ class RegistrationTest {
 
     @Test
     void shouldRegisterByCardNumber() {
-        Configuration.browser = "chrome";
-        System.setProperty("selenide.browser","chrome");
+
         open("http://localhost:9999");
         LocalDate date = LocalDate.now();
-        int year = date.getYear();
-        int month = date.getMonthValue();
-        int dayOfMonth = date.getDayOfMonth();
         int nextDay = date.getDayOfMonth() + 7;
-        $$("[placeholder=\"Город\"]").last().setValue("Нижний Новгород");
+        $$("[placeholder=\"Город\"]").last().setValue("Ка");
+        $(withText("Красноярск")).click();
         $$("[placeholder=\"Дата встречи\"]").last().setValue(String.valueOf(date));
         $$("[class='calendar__row'] > [class='calendar__day']").find(exactText(String.valueOf(nextDay))).click();
         $$("[name='name']").last().setValue("Фамилия");
