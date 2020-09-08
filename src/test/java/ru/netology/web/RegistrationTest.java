@@ -3,15 +3,18 @@ package ru.netology.web;
 import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
+
 
 class RegistrationTest {
 
@@ -25,18 +28,16 @@ class RegistrationTest {
 
         open("http://localhost:9999");
         LocalDate date = LocalDate.now();
+        LocalDate dateCurrent = LocalDate.now();
         String nextDay = date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+
+
         $$("[placeholder=\"Город\"]").last().setValue("Ка");
         $(withText("Красноярск")).click();
-        int currentDate;
-        $(By.cssSelector("[data-test-id=date]".toString());
-
-        $$("[class='calendar__row'] > [class='calendar__day']").find(exactText(String.valueOf(date.getDayOfMonth()))).click();
-
 
 
         $("[data-test-id=name] input").setValue("Фамилия и Имя");
-        $("[data-test-id=phone] input").setValue("+79169682127");
+        $("[data-test-id=phone] input").setValue(nextDay);
         $("[class='checkbox__box']").click();
         $$("button").find(exactText("Забронировать")).click();
         $(withText("Встреча успешно забронирована")).waitUntil(visible, 11000);
