@@ -1,19 +1,17 @@
 package ru.netology.web;
-
 import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
-
-
+import java.util.Date;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
+
 
 
 class RegistrationTest {
@@ -24,24 +22,40 @@ class RegistrationTest {
     }
 
     @Test
-    void shouldComplexElements() {
+    void shouldComplexElements() throws ParseException {
 
         open("http://localhost:9999");
-        LocalDate date = LocalDate.now();
-        LocalDate dateCurrent = LocalDate.now();
-        String nextDay = date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-
-
         $$("[placeholder=\"Город\"]").last().setValue("Ка");
         $(withText("Красноярск")).click();
 
+        //////////////////////////////////////////////////////////////////////
+        LocalDateTime date = LocalDateTime.now();
+        String currentDay = date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        ZonedDateTime localNow = Instant.now().atZone(ZoneOffset.systemDefault());
+        ZonedDateTime localAtCristsBirth = Instant.parse("0001-01-01T00:00:00.00Z").atZone(ZoneOffset.systemDefault());
+        Duration timePassed = Duration.between(localAtCristsBirth, localNow);
+        $("[data-test-id=date] input").data(String.valueOf(timePassed));
+        timePassed.getSeconds();
 
-        $("[data-test-id=name] input").setValue("Фамилия и Имя");
-        $("[data-test-id=phone] input").setValue(nextDay);
+        String dateInString = "15.04.2022";
+        SimpleDateFormat format = new SimpleDateFormat();
+        format.applyPattern("dd.MM.yyyy");
+        Date date1 = format.parse(dateInString);
+        date1.getTime();
+        long second = date1.getTime() / 1000;
+        /*int current = Integer.valueOf(String.valueOf(timePassed));
+        int simp = Integer.valueOf(String.valueOf(date1));
+        int result = simp - current;
+        Integer.toString(result);
+        */
+
+        //////////////////////////////////////////////////////////////////////
+        $("[data-test-id=name] input").setValue(String.valueOf(timePassed.getSeconds()));
+        $("[data-test-id=phone] input").setValue(String.valueOf(second));
         $("[class='checkbox__box']").click();
         $$("button").find(exactText("Забронировать")).click();
         $(withText("Встреча успешно забронирована")).waitUntil(visible, 11000);
-        $(withText(nextDay)).waitUntil(visible, 11000);
+        $(withText(currentDay)).waitUntil(visible, 11000);
     }
 
     @Test
