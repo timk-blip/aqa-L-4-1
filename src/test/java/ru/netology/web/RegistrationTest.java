@@ -3,15 +3,11 @@ import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
-
 
 
 class RegistrationTest {
@@ -21,9 +17,9 @@ class RegistrationTest {
         Selenide.closeWebDriver();
     }
 
-    @Test
+   /* @Test
     void shouldComplexElements() throws ParseException {
-
+/*
         open("http://localhost:9999");
         $$("[placeholder=\"Город\"]").last().setValue("Ка");
         $(withText("Красноярск")).click();
@@ -37,27 +33,22 @@ class RegistrationTest {
         $("[data-test-id=date] input").data(String.valueOf(timePassed));
         timePassed.getSeconds();
 
-        String dateInString = "15.04.2022";
-        SimpleDateFormat format = new SimpleDateFormat();
-        format.applyPattern("dd.MM.yyyy");
-        Date date1 = format.parse(dateInString);
-        date1.getTime();
-        long second = date1.getTime() / 1000;
-        /*int current = Integer.valueOf(String.valueOf(timePassed));
-        int simp = Integer.valueOf(String.valueOf(date1));
-        int result = simp - current;
-        Integer.toString(result);
-        */
+        String str = "15.04.2022";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        LocalDateTime dateTime = LocalDateTime.parse(str);
+        Duration timeDate = Duration.between(localAtCristsBirth, localNow);
+        dateTime(String.valueOf(timeDate));
+
 
         //////////////////////////////////////////////////////////////////////
         $("[data-test-id=name] input").setValue(String.valueOf(timePassed.getSeconds()));
-        $("[data-test-id=phone] input").setValue(String.valueOf(second));
+        $("[data-test-id=phone] input").setValue(String.valueOf(dateTime.getSecond()));
         $("[class='checkbox__box']").click();
         $$("button").find(exactText("Забронировать")).click();
         $(withText("Встреча успешно забронирована")).waitUntil(visible, 11000);
         $(withText(currentDay)).waitUntil(visible, 11000);
     }
-
+*/
     @Test
     void shouldRegisterByCardNumber() {
         open("http://localhost:9999");
