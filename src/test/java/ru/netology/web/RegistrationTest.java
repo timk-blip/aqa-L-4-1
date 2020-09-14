@@ -30,21 +30,12 @@ class RegistrationTest {
         String currentDay = date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         int month = date.getMonthValue();
         int year = date.getYear();
-
-
         String nextDate = "15.04.2022";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         LocalDate dateTime = LocalDate.parse(nextDate, formatter);
-      /* LocalDate dateTime = null;
-        dateTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        dateTime = LocalDate.parse(nextDate);
-        //String nextDate = "15.04.22";*/
-
-
         int nextDay = dateTime.getDayOfMonth();
         int nextMonth = dateTime.getMonthValue();
         int nextYear = dateTime.getYear();
-
         int resultYear = 0;
         if (year <= nextYear) {
             resultYear = nextYear - year;
@@ -56,8 +47,6 @@ class RegistrationTest {
             resultYear--;
             resultMonth = nextMonth - month + 12;
         }
-
-
         $("[class='icon icon_size_m icon_name_calendar icon_theme_alfa-on-white']").click();
         for (int i = 0; i < resultYear; i++) {
             $("[class='calendar__arrow calendar__arrow_direction_right calendar__arrow_double']").click();
@@ -71,8 +60,7 @@ class RegistrationTest {
         $("[data-test-id=phone] input").setValue("+79169682127");
         $("[class='checkbox__box']").click();
         $$("button").find(exactText("Забронировать")).click();
-        $(withText("Встреча успешно забронирована")).waitUntil(visible, 11000);
-        $(withText(nextDate)).waitUntil(visible, 11000);
+        $(withText("Встреча успешно забронирована на")).waitUntil(visible, 11000).shouldHave(text(nextDate));
     }
 
     @Test
